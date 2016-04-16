@@ -1,7 +1,7 @@
 import socket
 import threading
 import unified
-
+import sys
 
 class User:
 
@@ -24,6 +24,7 @@ some data'''
         print(unified.decode(msg))
 
 if __name__ == '__main__':
-    client = User('localhost', 1919)
+    client = User(sys.argv[1], 1919)
     client.connect()
+
 
