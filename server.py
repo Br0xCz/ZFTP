@@ -95,7 +95,7 @@ class Transmitter:
     def makepath(self,disk,directory):
 
         if SYSTEM == 'Linux':
-            return directory
+            return '/'+directory
         elif SYSTEM == 'Windows':
             return disk+directory
 
