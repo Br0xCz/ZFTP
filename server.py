@@ -91,7 +91,7 @@ class Transmitter:
     '''commands functions'''
 
     def makepath(self,disk,directory):
-
+        pass
 
     def getfile(self, **kwargs):
         request = kwargs['request']
