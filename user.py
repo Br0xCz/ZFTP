@@ -13,8 +13,8 @@ class User:
 
     def connect(self):
         self.s.connect((self.adress,self.port))
-        msg='''CD Python
-working-directory:tvorba/programovani
+        msg = '''LIST Python
+working-directory:home/pi/
 selected-disk:E
 anotherArgument01:argument02
 

@@ -3,7 +3,9 @@ import threading
 import json
 import os
 import unified
+import platform
 
+SYSTEM = platform.system()
 
 print('master test')
 
@@ -91,7 +93,11 @@ class Transmitter:
     '''commands functions'''
 
     def makepath(self,disk,directory):
-        pass
+
+        if SYSTEM == 'Linux':
+            return directory
+        elif SYSTEM == 'Windows':
+            return disk+directory
 
     def getfile(self, **kwargs):
         request = kwargs['request']
@@ -102,7 +108,7 @@ class Transmitter:
         selected_disk = request['params']['selected-disk'] + ':/'
         working_directory = request['params']['working-directory'] + '/'
         file_name = request['header']['argument']
-        path = selected_disk + working_directory + file_name
+        path = self.makepath(selected_disk, working_directory) + file_name
         try:
             with open(path, 'rb') as f:
                 data = f.read()
@@ -118,7 +124,7 @@ class Transmitter:
         folder_name = request['header']['argument']+'/'
         selected_disk = request['params']['selected-disk'] + ':/'
         working_directory = request['params']['working-directory'] + '/'
-        path=selected_disk+working_directory+folder_name
+        path = self.makepath(selected_disk, working_directory) + folder_name
         print(path)
         print(os.path.isdir(path))
         return None,None, 0
@@ -132,7 +138,7 @@ class Transmitter:
         selected_disk = request['params']['selected-disk'] + ':/'
         working_directory = request['params']['working-directory'] + '/'
 
-        path = selected_disk + working_directory
+        path = self.makepath(selected_disk, working_directory)
 
         files = os.listdir(path)
 
