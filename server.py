@@ -4,6 +4,9 @@ import json
 import os
 import unified
 
+
+print('master test')
+
 lock = threading.Lock()
 
 status = {
@@ -86,6 +89,9 @@ class Transmitter:
     '''
 
     '''commands functions'''
+
+    def makepath(self,disk,directory):
+
 
     def getfile(self, **kwargs):
         request = kwargs['request']
