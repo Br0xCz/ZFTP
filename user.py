@@ -24,7 +24,7 @@ some data'''
         print(unified.decode(msg))
 
 if __name__ == '__main__':
-    client = User(sys.argv[1], 1919)
+    client = User('192.168.1.106', 1919)
     client.connect()
 
 

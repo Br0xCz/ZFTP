@@ -2,8 +2,11 @@ import socket
 import threading
 import json
 import os
+import platform
 import unified
 
+SYSTEM = platform.system()
+print(SYSTEM)
 lock = threading.Lock()
 
 status = {
@@ -19,8 +22,10 @@ status = {
 class Transmitter:
     callable_commands = ('GETFILE', 'CD', 'UP', 'LIST', 'WRITE', 'SIZEOF')
     # callable_commands_dict={'GETFILE':Commands.getfile,}
-
-    default_route = ('C:/Users/kuba')
+    if (SYSTEM == 'Linux'):
+        default_route = ('home/pi')
+    elif (SYSTEM == 'Windows'):
+        default_route = ('C:/Users/kuba')
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def __init__(self, adress, port, is_server):
@@ -87,6 +92,12 @@ class Transmitter:
 
     '''commands functions'''
 
+    def makePath(self, disk, directory):
+        if SYSTEM == 'Linux':
+            return directory
+        elif SYSTEM == 'Windows':
+            return disk + directory
+
     def getfile(self, **kwargs):
         request = kwargs['request']
 
@@ -96,7 +107,9 @@ class Transmitter:
         selected_disk = request['params']['selected-disk'] + ':/'
         working_directory = request['params']['working-directory'] + '/'
         file_name = request['header']['argument']
-        path = selected_disk + working_directory + file_name
+
+        path = self.makePath(working_directory,selected_disk)+file_name
+
         try:
             with open(path, 'rb') as f:
                 data = f.read()
@@ -109,13 +122,15 @@ class Transmitter:
         return None, data, 1
 
     def cd(self, request):
-        folder_name = request['header']['argument']+'/'
+        folder_name = request['header']['argument'] + '/'
         selected_disk = request['params']['selected-disk'] + ':/'
         working_directory = request['params']['working-directory'] + '/'
-        path=selected_disk+working_directory+folder_name
+
+        path = self.makePath(selected_disk,working_directory)+folder_name
+
         print(path)
         print(os.path.isdir(path))
-        return None,None, 0
+        return None, None, 0
 
     def list(self, **kwargs):
         '''
@@ -126,7 +141,7 @@ class Transmitter:
         selected_disk = request['params']['selected-disk'] + ':/'
         working_directory = request['params']['working-directory'] + '/'
 
-        path = selected_disk + working_directory
+        path = self.makePath(selected_disk,working_directory)
 
         files = os.listdir(path)
 
