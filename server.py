@@ -67,6 +67,7 @@ class Transmitter:
             }
             if (not content is None):
                 for i in content:
+                    print(i + ' ' + content[i])
                     response['params'][i] = content[i]
             response['params']['working-directory'] = request['params']['working-directory']
             response['params']['selected-disk'] = request['params']['selected-disk']
@@ -92,12 +93,15 @@ class Transmitter:
 
     '''commands functions'''
 
-    def makepath(self,disk,directory):
+    def exists(self,path):
+        return os.path.isdir(path)
+
+    def makepath(self, disk, directory):
 
         if SYSTEM == 'Linux':
-            return '/'+directory
+            return '/' + directory
         elif SYSTEM == 'Windows':
-            return disk+directory
+            return disk + directory
 
     def getfile(self, **kwargs):
         request = kwargs['request']
@@ -121,13 +125,28 @@ class Transmitter:
         return None, data, 1
 
     def cd(self, request):
-        folder_name = request['header']['argument']+'/'
+        if request['header']['argument'] == '..' and '/' in request['params']['working-directory']:
+            try:
+                path = request['params']['working-directory'].split('/')
+                path = '/'.join(path[0:-1])
+                print(path)
+                directory = {'working-directory': path}
+                return directory, None, 0
+
+            except Exception as e:
+                print('Boep error')
+
+        elif not ('/' in request['header']['argument']):
+            pass
+
+        folder_name = request['header']['argument'] + '/'
         selected_disk = request['params']['selected-disk'] + ':/'
         working_directory = request['params']['working-directory'] + '/'
         path = self.makepath(selected_disk, working_directory) + folder_name
         print(path)
         print(os.path.isdir(path))
-        return None,None, 0
+        directory = {'working-directory': working_directory + folder_name}
+        return None, None, 0
 
     def list(self, **kwargs):
         '''
@@ -156,12 +175,26 @@ class Transmitter:
         return None, data_json, 0
 
     def write(self, request):
+        selected_disk = request['params']['selected-disk'] + ':/'
+        working_directory = request['params']['working-directory'] + '/'
+        file_name = request['header']['argument']
+
+        path = self.makepath(selected_disk, working_directory) + file_name
+
+        if request['params']['write-type'] is not None:
+            if request['params']['write-type'] == 'overwrite':
+                path = self.makepath(selected_disk, working_directory) + file_name
+                self.exists(path)
+            elif request['params']['write-type'] == 'create-new':
+                path = self.makepath(selected_disk, working_directory)
+                self.exists(path)
+
         pass
 
     def sizeof(self, request):
         pass
 
 
-if (__name__ == '__main__'):
+if __name__ == '__main__':
     server = Transmitter('0.0.0.0', 1919, True)
     server.start_server()

@@ -13,8 +13,8 @@ class User:
 
     def connect(self):
         self.s.connect((self.adress,self.port))
-        msg = '''LIST Python
-working-directory:home/pi
+        msg = '''WRITE user.py
+working-directory:home/pi/Documents/Python Projects/ZFTP
 selected-disk:E
 anotherArgument01:argument02
 
