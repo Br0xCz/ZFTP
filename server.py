@@ -50,6 +50,8 @@ class Transmitter:
         msg = conn.recv(256)
         msg = msg.decode('utf-8')
         listener = threading.Thread(target=self.listener, args=(conn,))
+        listener.daemon = False
+        listener.start()
         request = unified.decode(msg)
         response = self.process_request(request)
         conn.send(response.encode())
