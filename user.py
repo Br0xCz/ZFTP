@@ -17,6 +17,7 @@ class User:
 working-directory:home/pi/Documents/Python Projects/ZFTP
 selected-disk:E
 anotherArgument01:argument02
+write-type:overwrite
 
 some data'''
         self.s.send(msg.encode())

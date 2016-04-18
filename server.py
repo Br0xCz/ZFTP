@@ -49,10 +49,15 @@ class Transmitter:
         print('Got connection from ' + addr[0])
         msg = conn.recv(256)
         msg = msg.decode('utf-8')
-
+        listener = threading.Thread(target=self.listener, args=(conn,))
         request = unified.decode(msg)
         response = self.process_request(request)
         conn.send(response.encode())
+
+    def listener(self,conn=socket.socket()):
+        command=input('Server:')
+        if(command == 'shutdown'):
+            conn.close()
 
     def process_request(self, request):
 
