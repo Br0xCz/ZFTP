@@ -76,21 +76,7 @@ class Transmitter:
             text_response = unified.encode(response)
             return text_response
 
-    ''' Was supposed to add comas to path where vas space, python resolves it for itself
-    def surround(self, name_surround):
-        return '"'+name_surround+'"'
 
-    def removeSpaces(self, name):
-        if(' ' in name):
-            if('/' in name):
-                temporary=name.split('/')
-                for i in range(temporary.lenght):
-                    if(' ' in temporary[i]):
-                        temporary[i] = self.surround(temporary[i])
-                        return '/'.join(temporary)
-            return self.surround(name)
-        return name
-    '''
 
     '''commands functions'''
 
@@ -211,8 +197,6 @@ class Transmitter:
         'sizeof':sizeof,
     }
 
-
-    callable_commands = ('GETFILE', 'CD', 'UP', 'LIST', 'WRITE', 'SIZEOF')
 
 if __name__ == '__main__':
     server = Transmitter('0.0.0.0', 1919, True)
