@@ -13,16 +13,25 @@ class User:
 
     def connect(self):
         self.s.connect((self.adress,self.port))
-        msg = '''WRITE user.py
+        msg = '''GETFILE untitled.blend
 working-directory:home/pi/Documents/Python Projects/ZFTP
 selected-disk:E
 anotherArgument01:argument02
 write-type:overwrite
 
 some data'''
-        self.s.send(msg.encode())
+        msg_win='''GETFILE čuprvideo.mp4
+working-directory:
+selected-disk:E
+anotherArgument01:argument02
+write-type:overwrite
+
+Test text, see if that shit works, probably na'''
+
+        self.s.send(msg_win.encode())
         msg = self.s.recv(2048).decode('utf-8')
         print(unified.decode(msg))
+        self.s.close()
 
 if __name__ == '__main__':
     client = User(sys.argv[1], 1919)

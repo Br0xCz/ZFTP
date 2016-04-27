@@ -35,3 +35,7 @@ class user_ui(user):
 
     def parse_file(self):
         return NotImplemented
+
+if __name__ == '__main__':
+    client = user_ui(sys.argv[1], 1919)
+    client.connect()

@@ -34,6 +34,7 @@ def decode(msg):
 
 
 def encode(response):
+
     text_response = response['header']['type']+' '+str(response['header']['argument'])+'\n'
 
     for i in response['params']:
@@ -42,5 +43,4 @@ def encode(response):
 
     if not response['data'] is None:
         text_response += response['data']
-
     return text_response
