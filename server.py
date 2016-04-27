@@ -63,7 +63,7 @@ class Transmitter:
 
             kwargs = {'request': request}
 
-            content, data, status = getattr(self, request['header']['type'].lower())(**kwargs)
+            content, data, status =self.functions[request['header']['type'].lower()](**kwargs)
 
             response = {
                 'header': {'type': 'OK', 'argument': status}, 'params': {}, 'data': data

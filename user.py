@@ -20,7 +20,7 @@ anotherArgument01:argument02
 write-type:overwrite
 
 some data'''
-        msg_win='''GETFILE čuprvideo.mp4
+        msg_win='''LIST čuprvideo.mp4
 working-directory:
 selected-disk:E
 anotherArgument01:argument02
