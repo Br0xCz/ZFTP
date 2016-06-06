@@ -49,7 +49,7 @@ class Transmitter:
 
     def connection_handle(self, addr, conn=socket.socket()):
         print('Got connection from ' + addr[0])
-        msg = conn.recv(256)
+        msg = conn.recv(2048)
         msg = msg.decode('utf-8')
 
         request = unified.decode(msg)
@@ -58,6 +58,7 @@ class Transmitter:
         conn.close()
 
     def process_request(self, request):
+
 
         if request['header']['type'] in self.callable_commands:
 
@@ -74,6 +75,7 @@ class Transmitter:
             response['params']['working-directory'] = request['params']['working-directory']
             response['params']['selected-disk'] = request['params']['selected-disk']
             text_response = unified.encode(response)
+
             return text_response
 
 
